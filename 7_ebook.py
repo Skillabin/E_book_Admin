@@ -69,8 +69,8 @@ def build_prompt(community):
     1. NO storytelling, NO metaphors, NO fictional scenarios.
     2. NO conversational filler (e.g., "Let's dive in").
     3. Output MUST be valid, standalone HTML5 code with embedded CSS.
-    4. The CSS must ensure the document looks like a professional whitepaper (Serif fonts for body, distinct headers, good line-height, clear margins).
-    5. Strictly follow the tone and objective to make it look like human written.
+    4. The CSS must ensure the document looks like a professional whitepaper (Serif fonts for body, distinct headers, good line-height & padding, clear margins).
+    5. Make it human refined for GenZ or Youth and make it humanized with a professional documnetation format.
     
     **INTERNAL MINDSET (Do not explicitly state this, but embody it):**
     - What is the Industry? -> Insights, trends.
@@ -101,7 +101,7 @@ def build_prompt(community):
     - Use <ul> and <li> for lists to make it scannable.
     - Use <div style="background-color: #f0f2f6; padding: 15px; border-left: 5px solid #2c3e50; margin: 10px 0;"> for key takeaway, Have text in proper black color text.
     - Do NOT include markdown blocks (```html). Just return the raw HTML code.
-    - Make it editable in HTML form.
+    - Make it editable in output.
     """
 
 # --- MAIN APP LOGIC ---
@@ -181,6 +181,7 @@ st.markdown(
     "</div>", 
     unsafe_allow_html=True
 )
+
 
 
 
