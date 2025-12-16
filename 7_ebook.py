@@ -77,7 +77,7 @@ def build_prompt(community):
 
     **REQUIRED E-BOOK STRUCTURE (Strictly follow this order):**
     1. PREFACE (Brief executive summary)
-    2. TABLE OF CONTENTS (Hyperlinked internally and Indexed Table)
+    2. TABLE OF CONTENTS (Hyperlinked internally and Indexed Numbering Table)
     3. INTRODUCTION (Definition and scope of {community})
     4. INDUSTRY EVALUATION (Market size, demand, global impact)
     5. ROLES (Detailed job titles and hierarchies)
@@ -178,6 +178,7 @@ st.markdown(
     "</div>", 
     unsafe_allow_html=True
 )
+
 
 
 
