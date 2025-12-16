@@ -78,11 +78,11 @@ def build_prompt(community):
     - What is there for Me? -> Roles, specific skills.
     - How do I enter? -> Actionable roadmaps.
 
-    **REQUIRED E-BOOK STRUCTURE (Strictly follow this order):**
+    **REQUIRED E-BOOK STRUCTURE (Strictly follow this order and have a golden format same for every resume):**
     1. PREFACE (Brief executive summary)
-    2. TABLE OF CONTENTS (Hyperlinked internally and Indexed Numbering Table)
+    2. TABLE OF CONTENTS (Hyperlinked internally and Indexed Numbering tabular format)
     3. INTRODUCTION (Definition and scope of {community})
-    4. INDUSTRY EVOLUTION (History and Future of Development)
+    4. INDUSTRY EVOLUTION (History and Future of Development of that respective feild)
     5. ROLES (Detailed job titles and hierarchies)
     6. SKILLS (Hard and Soft skills matrix)
     7. 10-YEAR GROWTH OUTLOOK (Future trends, AI impact)
@@ -102,7 +102,7 @@ def build_prompt(community):
     - Use <ul> and <li> for lists to make it scannable.
     - Use <div style="background-color: #f0f2f6; padding: 15px; border-left: 5px solid #2c3e50; margin: 10px 0;"> for key takeaway, Have text in proper black color text.
     - Do NOT include markdown blocks (```html). Just return the raw HTML code.
-    - Make it editable in output.
+    - Make it  an editable E-Book through HTML.
     """
 
 # --- MAIN APP LOGIC ---
@@ -182,6 +182,7 @@ st.markdown(
     "</div>", 
     unsafe_allow_html=True
 )
+
 
 
 
