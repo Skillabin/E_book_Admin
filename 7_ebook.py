@@ -67,10 +67,11 @@ def build_prompt(community):
     
     **CONSTRAINTS:**
     1. NO storytelling, NO metaphors, NO fictional scenarios.
-    2. NO conversational filler (e.g., "Let's dive in").
+    2. NO conversational filler (e.g., "Let's dive in") or No Conversational Heading(e.g., "Defining...)
     3. Output MUST be valid, standalone HTML5 code with embedded CSS.
     4. The CSS must ensure the document looks like a professional whitepaper (Serif fonts for body, distinct headers, good line-height & padding, clear margins).
     5. Make it human refined for GenZ or Youth and make it humanized with a professional documnetation format.
+    6. Avoid adding any of the instructions in the E Book content.
     
     **INTERNAL MINDSET (Do not explicitly state this, but embody it):**
     - What is the Industry? -> Insights, trends.
@@ -181,6 +182,7 @@ st.markdown(
     "</div>", 
     unsafe_allow_html=True
 )
+
 
 
 
