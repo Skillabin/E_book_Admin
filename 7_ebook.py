@@ -1,17 +1,19 @@
 import streamlit as st
 import google.generativeai as genai
 from datetime import datetime
-from dotenv import load_dotenv
 import os
 
-# --- CONFIGURATION: PASTE YOUR KEY HERE ---
-# Replace the string below with your actual API key
-load_dotenv()
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+# --- AUTHENTICATION ---
+try:
+    # This loads the key from Streamlit Cloud's secret storage
+    GEMINI_API_KEY = st.secrets["GEMINI_API_KEY"]
+except (FileNotFoundError, KeyError):
+    st.error("Please set your GEMINI_API_KEY in Streamlit Secrets.")
+    st.stop()
 
 # --- PAGE CONFIGURATION ---
 st.set_page_config(
-    page_title="HR E-Book Generator",
+    page_title="E-Book Generator",
     page_icon="📘",
     layout="wide"
 )
@@ -57,7 +59,7 @@ with st.sidebar:
 def build_prompt(community):
     return f"""
     You are an Expert Industry Analyst and Career Strategist with an IQ of 220. 
-    Your task is to write a comprehensive, publication-ready E-Book for a Human Resources (HR) department targeting the specific community: '{community}'.
+    Your task is to write a comprehensive, publication-ready E-Book for a IT and Non-IT Recruiting Agency targeting the specific community: '{community}'.
 
     **OBJECTIVE:**
     Generate a 10-15 page equivalent professional guide. The tone must be authoritative, motivational, and strictly industry-focused.
@@ -75,7 +77,7 @@ def build_prompt(community):
 
     **REQUIRED E-BOOK STRUCTURE (Strictly follow this order):**
     1. PREFACE (Brief executive summary)
-    2. TABLE OF CONTENTS (Hyperlinked internally)
+    2. TABLE OF CONTENTS (Hyperlinked internally and Indexed Table)
     3. INTRODUCTION (Definition and scope of {community})
     4. INDUSTRY EVALUATION (Market size, demand, global impact)
     5. ROLES (Detailed job titles and hierarchies)
@@ -100,7 +102,7 @@ def build_prompt(community):
     """
 
 # --- MAIN APP LOGIC ---
-st.markdown("<h1 class='main-header'>📘 Professional HR E-Book Generator</h1>", unsafe_allow_html=True)
+st.markdown("<h1 class='main-header'>📘 Professional E-Book Generator</h1>", unsafe_allow_html=True)
 st.markdown("Generate comprehensive, industry-standard guides for any professional community.")
 
 col1, col2 = st.columns([2, 1])
@@ -176,3 +178,6 @@ st.markdown(
     "</div>", 
     unsafe_allow_html=True
 )
+
+
+
