@@ -98,7 +98,7 @@ def build_prompt(community):
     - Use a clean font-family (e.g., 'Merriweather', serif for text; 'Arial', sans-serif for headers).
     - Use <h2>, <h3> for sections.
     - Use <ul> and <li> for lists to make it scannable.
-    - Use <div style="background-color: #f0f2f6; padding: 15px; border-left: 5px solid #2c3e50; margin: 10px 0;"> for key takeaways.
+    - Use <div style="background-color: #f0f2f6; padding: 15px; border-left: 5px solid #2c3e50; margin: 10px 0;"> for key takeaway, Have text in proper black color text.
     - Do NOT include markdown blocks (```html). Just return the raw HTML code.
     - Make it editable in HTML form.
     """
@@ -180,6 +180,7 @@ st.markdown(
     "</div>", 
     unsafe_allow_html=True
 )
+
 
 
 
