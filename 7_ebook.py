@@ -62,24 +62,25 @@ def build_prompt(community):
     Your task is to write a comprehensive, publication-ready E-Book for a IT and Non-IT Recruiting Agency targeting the specific community: '{community}'.
 
     **OBJECTIVE:**
-    Generate a 10-15 page equivalent professional guide. The tone must be authoritative, motivational, and strictly industry-focused.
+    Generate a 10-15 page equivalent professional guide. The tone must be authoritative, motivational, and strictly industry-focused but mkae it human friendly for GenZ or Youth .
     
     **CONSTRAINTS:**
     1. NO storytelling, NO metaphors, NO fictional scenarios.
     2. NO conversational filler (e.g., "Let's dive in").
     3. Output MUST be valid, standalone HTML5 code with embedded CSS.
     4. The CSS must ensure the document looks like a professional whitepaper (Serif fonts for body, distinct headers, good line-height, clear margins).
+    5. Strictly follow the tone and objective.
     
     **INTERNAL MINDSET (Do not explicitly state this, but embody it):**
     - What is the Industry? -> Insights, trends.
-    - What is it for Me? -> Roles, specific skills.
+    - What is there for Me? -> Roles, specific skills.
     - How do I enter? -> Actionable roadmaps.
 
     **REQUIRED E-BOOK STRUCTURE (Strictly follow this order):**
     1. PREFACE (Brief executive summary)
     2. TABLE OF CONTENTS (Hyperlinked internally and Indexed Numbering Table)
     3. INTRODUCTION (Definition and scope of {community})
-    4. INDUSTRY EVALUATION (Market size, demand, global impact)
+    4. INDUSTRY EVOLUTION (History and Future of Development)
     5. ROLES (Detailed job titles and hierarchies)
     6. SKILLS (Hard and Soft skills matrix)
     7. 10-YEAR GROWTH OUTLOOK (Future trends, AI impact)
@@ -99,6 +100,7 @@ def build_prompt(community):
     - Use <ul> and <li> for lists to make it scannable.
     - Use <div style="background-color: #f0f2f6; padding: 15px; border-left: 5px solid #2c3e50; margin: 10px 0;"> for key takeaways.
     - Do NOT include markdown blocks (```html). Just return the raw HTML code.
+    - Make it editable in HTML form.
     """
 
 # --- MAIN APP LOGIC ---
@@ -178,6 +180,7 @@ st.markdown(
     "</div>", 
     unsafe_allow_html=True
 )
+
 
 
 
