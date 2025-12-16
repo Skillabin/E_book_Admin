@@ -62,14 +62,15 @@ def build_prompt(community):
     Your task is to write a comprehensive, publication-ready E-Book for a IT and Non-IT Recruiting Agency targeting the specific community: '{community}'.
 
     **OBJECTIVE:**
-    Generate a 10-15 page equivalent professional guide. The tone must be authoritative, motivational, and strictly industry-focused but mkae it human friendly for GenZ or Youth .
+    Generate a 10-15 page equivalent professional guide. The tone must be authoritative, motivational, 
+    and strictly industry-focused but make it human refined for GenZ or Youth.
     
     **CONSTRAINTS:**
     1. NO storytelling, NO metaphors, NO fictional scenarios.
     2. NO conversational filler (e.g., "Let's dive in").
     3. Output MUST be valid, standalone HTML5 code with embedded CSS.
     4. The CSS must ensure the document looks like a professional whitepaper (Serif fonts for body, distinct headers, good line-height, clear margins).
-    5. Strictly follow the tone and objective.
+    5. Strictly follow the tone and objective to make it look like human written.
     
     **INTERNAL MINDSET (Do not explicitly state this, but embody it):**
     - What is the Industry? -> Insights, trends.
@@ -180,6 +181,7 @@ st.markdown(
     "</div>", 
     unsafe_allow_html=True
 )
+
 
 
 
