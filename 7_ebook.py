@@ -72,6 +72,7 @@ def build_prompt(community):
     4. The CSS must ensure the document looks like a professional whitepaper (Serif fonts for body, distinct headers, good line-height & padding, clear margins).
     5. Make it human refined for GenZ or Youth and make it humanized with a professional documnetation format.
     6. Avoid adding any of the instructions in the E Book content.
+    7. Make sure that all the sections are formatted properly in bold, headers and sub headers)
     
     **INTERNAL MINDSET (Do not explicitly state this, but embody it):**
     - What is the Industry? -> Insights, trends.
@@ -82,7 +83,7 @@ def build_prompt(community):
     1. PREFACE (Brief executive summary)
     2. TABLE OF CONTENTS (Hyperlinked internally and Indexed Numbering tabular format)
     3. INTRODUCTION (Definition and scope of {community})
-    4. INDUSTRY EVOLUTION (History and Future of Development of that respective feild)
+    4. INDUSTRY EVOLUTION (History and Future of that respective field)
     5. ROLES (Detailed job titles and hierarchies)
     6. SKILLS (Hard and Soft skills matrix)
     7. 10-YEAR GROWTH OUTLOOK (Future trends, AI impact)
@@ -182,6 +183,7 @@ st.markdown(
     "</div>", 
     unsafe_allow_html=True
 )
+
 
 
 
