@@ -1,14 +1,13 @@
 import streamlit as st
 import google.generativeai as genai
+from streamlit_quill import st_quill
 from datetime import datetime
 import os
 
 # --- AUTHENTICATION ---
 try:
-    # This loads the key from Streamlit Cloud's secret storage
     GEMINI_API_KEY = st.secrets["GEMINI_API_KEY"]
 except (FileNotFoundError, KeyError):
-    # Fallback message
     st.error("Please set your GEMINI_API_KEY in Streamlit Secrets.")
     st.stop()
 
@@ -19,13 +18,15 @@ st.set_page_config(
     layout="wide"
 )
 
-# --- CUSTOM CSS FOR APP UI ---
+# --- CUSTOM CSS ---
 st.markdown("""
 <style>
     .reportview-container { background: #f5f5f5; }
     .main-header { font-family: 'Helvetica Neue', sans-serif; color: #2c3e50; font-weight: 700; }
     .stButton>button { background-color: #2c3e50; color: white; border-radius: 5px; height: 3em; width: 100%; font-weight: bold; }
     .stButton>button:hover { background-color: #34495e; border: 1px solid white; }
+    /* Increase height of the editor */
+    iframe[title="streamlit_quill.st_quill"] { min-height: 600px; } 
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
 </style>
@@ -37,12 +38,12 @@ with st.sidebar:
     st.title("Settings")
     st.markdown("**System Status:** ✅ API Connected")
     st.markdown("---")
-    st.markdown("**Output Format:**\n- HTML 5\n- Publication Ready\n- Mobile Responsive")
+    st.markdown("**Mode:** Visual Editor (WYSIWYG)")
 
-# --- PROMPT GENERATION LOGIC (Restored from 7_ebook.py) ---
+# --- PROMPT LOGIC (EXACTLY AS REQUESTED) ---
 def build_prompt(community):
     return f"""
- You are an Expert Industry Analyst and Career Strategist with an IQ of 220. 
+    You are an Expert Industry Analyst and Career Strategist with an IQ of 220. 
     Your task is to write a comprehensive, publication-ready E-Book for a IT and Non-IT Recruiting Agency targeting the specific community: '{community}'.
 
     **OBJECTIVE:**
@@ -90,99 +91,95 @@ def build_prompt(community):
     - Make it  an editable E-Book through HTML.
     """
 
-# --- MAIN APP LOGIC ---
+# --- MAIN APP ---
 st.markdown("<h1 class='main-header'>📘 Professional HR E-Book Generator</h1>", unsafe_allow_html=True)
-st.markdown("Generate comprehensive, industry-standard guides for any professional community.")
+st.markdown("Generate, **visually edit**, and publish guides.")
 
 col1, col2 = st.columns([2, 1])
-
 with col1:
-    target_community = st.text_input("Target Community / Job Role", placeholder="e.g., Data Scientists, Nursing Staff")
-
+    target_community = st.text_input("Target Community / Job Role", placeholder="e.g., Data Scientists")
 with col2:
-    st.write("") # Spacer
-    st.write("") # Spacer
+    st.write("")
+    st.write("")
     generate_btn = st.button("Generate E-Book")
 
-# --- SESSION STATE INITIALIZATION ---
-# This holds the book content in memory so we can edit it
+# --- SESSION STATE ---
 if 'ebook_content' not in st.session_state:
     st.session_state['ebook_content'] = ""
 
-# --- GENERATION PROCESS ---
+# --- GENERATION ---
 if generate_btn:
     if not target_community:
-        st.warning("Please specify a target community.")
+        st.warning("Target community required.")
     else:
         try:
-            # 1. Configure Gemini
             genai.configure(api_key=GEMINI_API_KEY)
-            
-            # Using 1.5 Pro because it is smarter and better at long formats
+            # Using 1.5 Pro for best adherence to your detailed prompt structure
             model = genai.GenerativeModel('gemini-2.5-flash') 
-
-            # 2. UI Feedback
-            status_text = st.empty()
-            progress_bar = st.progress(0)
             
-            status_text.markdown("### 🧠 Analyzing Industry Trends...")
-            progress_bar.progress(20)
-
-            # 3. Call API
-            prompt = build_prompt(target_community)
-            status_text.markdown(f"### ✍️ Drafting content for '{target_community}'... (This may take a moment)")
-            progress_bar.progress(50)
-            
-            response = model.generate_content(prompt)
-            
-            # 4. Process & Save to Session State
-            clean_text = response.text.replace("```html", "").replace("```", "")
-            st.session_state['ebook_content'] = clean_text
-            
-            progress_bar.progress(100)
-            status_text.success("E-Book Generated Successfully! Scroll down to Edit/Download.")
+            with st.spinner(f"Drafting content for {target_community}..."):
+                response = model.generate_content(build_prompt(target_community))
+                
+                # Clean up response for the Editor
+                # We strip the outer HTML tags so the Editor can just focus on the body text
+                clean_text = response.text.replace("```html", "").replace("```", "")
+                clean_text = clean_text.replace("<!DOCTYPE html>", "")
+                clean_text = clean_text.replace("<html>", "").replace("</html>", "")
+                clean_text = clean_text.replace("<body>", "").replace("</body>", "")
+                
+                # Note: We try to keep the style block if possible, but some visual editors 
+                # might strip it. The final download re-injects the professional styles.
+                
+                st.session_state['ebook_content'] = clean_text
+            st.rerun() # Refresh to show editor
 
         except Exception as e:
-            st.error(f"An error occurred: {str(e)}")
+            st.error(f"Error: {str(e)}")
 
-# --- EDITOR & DOWNLOAD SECTION ---
-# We only show this if there is content in the session state
+# --- VISUAL EDITOR ---
 if st.session_state['ebook_content']:
     st.divider()
-    st.subheader("✍️ Edit Content")
-    st.info("You can edit the HTML code below directly. The Preview and Download will update automatically when you click out of the box or press Ctrl+Enter.")
-
-    # TEXT AREA for Editing
-    # We use the session state as the initial value
-    edited_html = st.text_area(
-        "HTML Source Editor", 
-        value=st.session_state['ebook_content'], 
-        height=400
+    st.subheader("✍️ Visual Editor")
+    st.caption("Edit the content below directly (like a Word doc). Changes are saved for the download button.")
+    
+    # The Visual Editor Component
+    edited_content = st_quill(
+        value=st.session_state['ebook_content'],
+        html=True,
+        key="quill_editor",
+        preserve_whitespace=True
     )
 
-    # ACTION BUTTONS
-    col_d1, col_d2 = st.columns([1, 2])
+    st.divider()
     
+    # WRAPPER FOR DOWNLOAD
+    # We wrap the edited body content back into a full HTML file for the final download
+    # This ensures that even if the editor stripped the CSS, the download looks professional.
+    final_html = f"""
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <link href="[https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&display=swap](https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&display=swap)" rel="stylesheet">
+        <style>
+            body {{ font-family: 'Merriweather', serif; line-height: 1.6; padding: 40px; max-width: 900px; margin: auto; color: #333; }}
+            h1, h2, h3 {{ font-family: 'Helvetica Neue', sans-serif; color: #2c3e50; margin-top: 30px; }}
+            ul {{ margin-bottom: 20px; }}
+            li {{ margin-bottom: 10px; }}
+            .highlight {{ background-color: #f0f2f6; padding: 15px; border-left: 5px solid #2c3e50; margin: 20px 0; }}
+        </style>
+    </head>
+    <body>
+        {edited_content}
+    </body>
+    </html>
+    """
+    
+    col_d1, col_d2 = st.columns([1, 2])
     with col_d1:
         st.download_button(
-            label="📥 Download Final HTML",
-            data=edited_html,  # We download the EDITED version, not the original
-            file_name=f"{target_community.replace(' ', '_')}_Career_Guide.html" if target_community else "Ebook.html",
+            label="📥 Download Final E-Book",
+            data=final_html,
+            file_name=f"{target_community.replace(' ', '_')}_Guide.html" if target_community else "guide.html",
             mime="text/html"
         )
-
-    # PREVIEW SECTION
-    st.divider()
-    st.subheader("📖 Live Preview")
-    # We preview the EDITED version
-    st.components.v1.html(edited_html, height=800, scrolling=True)
-
-# --- FOOTER ---
-st.markdown("---")
-st.markdown(
-    "<div style='text-align: center; color: grey; font-size: 12px;'>"
-    f"Generated by Gemini AI • {datetime.now().year} • HR Professional Suite"
-    "</div>", 
-    unsafe_allow_html=True
-)
-
