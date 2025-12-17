@@ -119,7 +119,7 @@ if generate_btn:
             genai.configure(api_key=GEMINI_API_KEY)
             
             # Using 1.5 Pro because it is smarter and better at long formats
-            model = genai.GenerativeModel('gemini-1.5-pro') 
+            model = genai.GenerativeModel('gemini-2.5-flash') 
 
             # 2. UI Feedback
             status_text = st.empty()
@@ -185,3 +185,4 @@ st.markdown(
     "</div>", 
     unsafe_allow_html=True
 )
+
