@@ -6,11 +6,10 @@ import tempfile
 import subprocess
 
 # =====================
-# CONFIG & SECRETS
+# SECRETS (Streamlit only)
 # =====================
-# Streamlit Secrets ONLY (no dotenv)
 if "GEMINI_API_KEY" not in st.secrets:
-    st.error("❌ GEMINI_API_KEY not found. Please add it to Streamlit Secrets.")
+    st.error("❌ GEMINI_API_KEY not found in Streamlit Secrets.")
     st.stop()
 
 GEMINI_API_KEY = st.secrets["GEMINI_API_KEY"]
@@ -41,58 +40,61 @@ hr {
 """, unsafe_allow_html=True)
 
 # =====================
-# PROMPT
+# PROMPT (UNCHANGED)
 # =====================
 def build_prompt(community):
-    return f"""
+ return f"""
 You are an Expert Industry Analyst and Career Strategist.
 
-Generate a professional, publication-ready E-Book for the community: "{community}".
+Generate a **professional, publication-ready E-Book** for the community: "{community}".
 
 Rules:
 - Output ONLY valid standalone HTML5
-- Do NOT use Markdown syntax of any kind
-- Use ONLY valid HTML tags (<strong>, <em>, <h2>, <h3>, <p>, <ul>, <li>)
+- No markdown blocks
+- Use <h2>, <h3>, <p>, <ul>, <li>
 - Internal TOC hyperlinks must work
 - Clean, professional formatting
 - Editable document
 
-INTERNAL MINDSET (do not state explicitly):
-- Industry insights & trends
-- Roles & skill expectations
-- Entry and growth roadmap
+    **INTERNAL MINDSET (Do not explicitly state this, but embody it):**
+    - What is the Industry? -> Insights, trends.
+    - What is there for Me? -> Roles, specific skills.
+    - How do I enter? -> Actionable roadmaps.
 
-REQUIRED STRUCTURE (strict order):
-1. PREFACE
-2. TABLE OF CONTENTS (hyperlinked, numbered)
-3. INTRODUCTION
-4. INDUSTRY EVOLUTION
-5. ROLES
-6. SKILLS
-7. 10-YEAR GROWTH OUTLOOK
-8. HOW TO PREPARE
-9. INTERPERSONAL & BEHAVIORAL SKILLS
-10. LEARNING CURVE & ROADMAP
-11. EXAMPLE PROJECTS
-12. CERTIFICATIONS / COURSES / TOOLS
-13. COMPANY EXAMPLES (India)
-14. SALARY RANGES & PERKS
-15. CONCLUSION
-16. APPENDIX & TEMPLATES
+ **REQUIRED E-BOOK STRUCTURE (Strictly follow this order and have a golden format same for every resume):**
+    1. PREFACE (Brief executive summary)
+    2. TABLE OF CONTENTS (Hyperlinked internally and strictly Indexed Numbering tabular format)
+    3. INTRODUCTION (Definition and scope of {community})
+    4. INDUSTRY EVOLUTION (History and Future of Development of that respective feild)
+    4. INDUSTRY EVOLUTION (History and Future of Development of that respective field)
+    5. ROLES (Detailed job titles and hierarchies)
+    6. SKILLS (Hard and Soft skills matrix)
+    7. 10-YEAR GROWTH OUTLOOK (Future trends, AI impact)
+    8. HOW TO PREPARE (Prerequisites and mindset)
+    9. INTERPERSONAL & BEHAVIORAL SKILLS (Communication, leadership)
+    10. LEARNING CURVE & ROADMAP (0-6 months, 6-12 months, 1-3 years)
+    11. EXAMPLE PROJECTS (3 specific, real-world portfolio projects with descriptions)
+    12. CERTIFICATIONS / COURSES / TOOLS (Specific names of tools and credentials)
+    13. COMPANY EXAMPLES (List of Top tier, mid-tier, and startups hiring {community} from perspective of Indian Job Market)
+    14. SALARY RANGES & PERKS (Entry, Mid, Senior levels)
+    15. CONCLUSION (Final actionable advice)
+    16. APPENDIX & TEMPLATES (resume keywords)
 
-CONSTRAINTS:
-- NO storytelling
-- NO metaphors
-- NO conversational filler
-- NO markdown (**bold**, *italic*, backticks, underscores)
-- Return raw HTML only
+**CONSTRAINTS:**
+1. NO storytelling, NO metaphors, NO fictional scenarios.
+2. NO conversational filler (e.g., "Let's dive in", "In this guide...") or Conversational Headings.
+3. Make it human refined for GenZ/Youth but maintain a professional documentation format.
+4. Do not output any preamble or post-script instructions;
+5.Do NOT use Markdown syntax of any kind.
+ This includes **bold**, *italic*, __underline__, backticks, or markdown headings.
+ Use ONLY valid HTML tags such as <strong>, <em>, <ul>, <li>, <p>.
 """
 
 # =====================
 # HEADER
 # =====================
 st.markdown("<div class='main-header'>📘 HR E-Book Generator</div>", unsafe_allow_html=True)
-st.caption("Generate → Edit directly → Download (PDF)")
+st.caption("Generate → Edit directly → Download (HTML / PDF)")
 
 # =====================
 # INPUT
@@ -150,11 +152,7 @@ if generate_btn and target_community:
     with st.spinner("Generating professional E-Book…"):
         response = model.generate_content(build_prompt(target_community))
 
-    html = (
-        response.text
-        .replace("```html", "")
-        .replace("```", "")
-    )
+    html = response.text.replace("```html", "").replace("```", "")
 
     st.session_state.ebook_html = html
     st.session_state.edited_html = html
@@ -172,11 +170,11 @@ if st.session_state.ebook_html:
     <head>
         <style>
             body {{
-                font-family: Georgia, serif;
-                padding: 30px;
-                line-height: 1.7;
-                background-color: #ffffff !important;
-                color: #000000 !important;
+              font-family: Georgia, serif;
+              padding: 30px;
+              line-height: 1.7;
+              background-color: #ffffff !important;
+              color: #000000 !important;
             }}
             h2, h3 {{
                 font-family: Arial, sans-serif;
