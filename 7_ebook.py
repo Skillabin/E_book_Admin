@@ -94,7 +94,7 @@ Rules:
 # HEADER
 # =====================
 st.markdown("<div class='main-header'>📘 HR E-Book Generator</div>", unsafe_allow_html=True)
-st.caption("Generate → Edit directly → Download (HTML / PDF)")
+st.caption("Generate → Edit directly → Download (HTML → Print to PDF)")
 
 # =====================
 # INPUT
@@ -119,28 +119,6 @@ if "ebook_html" not in st.session_state:
 
 if "edited_html" not in st.session_state:
     st.session_state.edited_html = ""
-
-# =====================
-# HTML → PDF (wkhtmltopdf)
-# =====================
-def html_to_pdf(html_content):
-    with tempfile.NamedTemporaryFile(
-        delete=False,
-        suffix=".html",
-        mode="w",
-        encoding="utf-8"
-    ) as html_file:
-        html_file.write(html_content)
-        html_path = html_file.name
-
-    pdf_path = html_path.replace(".html", ".pdf")
-
-    subprocess.run(
-        ["wkhtmltopdf", "--enable-local-file-access", html_path, pdf_path],
-        check=True
-    )
-
-    return pdf_path
 
 # =====================
 # GENERATION
@@ -198,24 +176,23 @@ if st.session_state.ebook_html:
     st.components.v1.html(editable_html, height=750, scrolling=True)
 
     # =====================
-    # DOWNLOAD SECTION
+    # DOWNLOAD SECTION (HTML → PRINT PDF)
     # =====================
     st.divider()
-    st.subheader("📥 Download Edited E-Book")
+    st.subheader("📥 Download E-Book")
 
-    if st.button("📄 Generate PDF"):
-        with st.spinner("Generating PDF…"):
-            pdf_path = html_to_pdf(st.session_state.edited_html)
+    st.info(
+        "📄 To get PDF: Download HTML → Open it in your browser → "
+        "Press Ctrl+P / Cmd+P → Save as PDF. "
+        "All Table of Contents links will remain clickable."
+    )
 
-        with open(pdf_path, "rb") as f:
-            st.download_button(
-                label="⬇️ Download PDF",
-                data=f,
-                file_name=f"{target_community.replace(' ', '_')}_HR_Ebook.pdf",
-                mime="application/pdf"
-            )
-
-        os.remove(pdf_path)
+    st.download_button(
+        label="⬇️ Download HTML (Printable & Editable)",
+        data=st.session_state.edited_html,
+        file_name=f"{target_community.replace(' ', '_')}_HR_Ebook.html",
+        mime="text/html"
+    )
 
 # =====================
 # FOOTER
