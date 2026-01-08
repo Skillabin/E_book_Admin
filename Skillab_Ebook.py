@@ -188,6 +188,10 @@ if st.session_state.ebook_html:
         "All Table of Contents links will remain clickable."
     )
 
+    st.info(
+    "NOTE: If E-book is providing unwanted format in Table, Headings, etc. Please Regenerate it."
+    )
+
     st.download_button(
         label="⬇️ Download HTML (Printable & Editable)",
         data=st.session_state.edited_html,
@@ -200,5 +204,6 @@ if st.session_state.ebook_html:
 # =====================
 st.markdown("---")
 st.caption(f"HR Publishing System • {datetime.now().year}")
+
 
 
