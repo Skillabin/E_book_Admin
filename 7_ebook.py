@@ -63,7 +63,7 @@ Rules:
 
  **REQUIRED E-BOOK STRUCTURE (Strictly follow this order and have a golden format same for every resume):**
     1. PREFACE (Brief executive summary)
-    2. TABLE OF CONTENTS (Hyperlinked internally and strictly Indexed Numbering tabular format)
+    2. TABLE OF CONTENTS (Hyperlinked internally and strictly Indexed Numbering tabular formatwith excluding 'PREFACE' and 'TABLE OF CONTENTS' in the table)
     3. INTRODUCTION (Definition and scope of {community})
     4. INDUSTRY EVOLUTION (History and Future of Development of that respective feild)
     4. INDUSTRY EVOLUTION (History and Future of Development of that respective field)
@@ -199,3 +199,4 @@ if st.session_state.ebook_html:
 # =====================
 st.markdown("---")
 st.caption(f"HR Publishing System • {datetime.now().year}")
+
