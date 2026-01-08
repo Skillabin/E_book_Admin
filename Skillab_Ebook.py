@@ -88,6 +88,7 @@ Rules:
 5.Do NOT use Markdown syntax of any kind.
  This includes **bold**, *italic*, __underline__, backticks, or markdown headings.
  Use ONLY valid HTML tags such as <strong>, <em>, <ul>, <li>, <p>.
+6. Keep the format same for each request of E Book.
 """
 
 # =====================
@@ -199,4 +200,5 @@ if st.session_state.ebook_html:
 # =====================
 st.markdown("---")
 st.caption(f"HR Publishing System • {datetime.now().year}")
+
 
